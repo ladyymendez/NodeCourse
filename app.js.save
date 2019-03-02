@@ -1,0 +1,30 @@
+const  http = require('http');
+
+const server = http.createServer((req,res)=>{
+  const url= req.url;
+  if(url=='/'){
+
+  }
+  console.log("Hi", req)
+  res.setHeader('Content-Type', 'text/html');
+  res.write(`
+   <html>
+     <body>
+console.log("Hi", req)
+  res.setHeader('Content-Type', 'text/html');
+  res.write(`
+   <html>
+     <body>
+       Hola 
+     </body>
+   </html>
+  `)
+  res.end();       Hola 
+     </body>
+   </html>
+  `)
+  res.end();
+
+});
+
+server.listen(3000);

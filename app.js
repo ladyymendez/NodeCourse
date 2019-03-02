@@ -6,21 +6,33 @@ const server = http.createServer((req,res)=>{
   const url= req.url;
   const method= req.method;
   if(url==='/'){
-  res.write(`
-   <html>
-     <body>
-      <form action="/message" method="POST" name="message">
-        <input type="text"> <button type="submit">Send</button></input>
-      </form>
-     </body>
-   </html>
-  `);
-  return res.end();
-  
+    console.log(11);
+    res.write(`
+      <html>
+        <body>
+          <form action="/message" method="POST" >
+            <input type="text" name="message"> <button type="submit">Send</button></input>
+          </form>
+        </body>
+      </html>
+      `);
+    return res.end();
   }
   if(url==='/message'&& method==="POST")
   {
-    fs.writeFileSync('message.txt','Hi this a message from the client');
+    console.log(1);
+    const body = [];
+    req.on('data',(chunk) => {
+      console.log(2);
+      console.log(chunk);
+      body.push(chunk);
+    });
+    req.on('end',() => {
+      const parseBody = Buffer.concat(body).toString();
+      const message = parseBody.split('=')[1];
+      fs.writeFileSync('message.txt', message);
+    });
+    
     res.statusCode= 302;
     res.setHeader('Location','/');
     return res.end();
