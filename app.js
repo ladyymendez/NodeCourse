@@ -1,11 +1,11 @@
 const  http = require('http');
+const fs = require('fs');
 
 const server = http.createServer((req,res)=>{
 
   const url= req.url;
+  const method= req.method;
   if(url==='/'){
-  console.log("Hi", req)
-  res.setHeader('Content-Type', 'text/html');
   res.write(`
    <html>
      <body>
@@ -18,7 +18,13 @@ const server = http.createServer((req,res)=>{
   return res.end();
   
   }
-  console.log("Hi", req)
+  if(url==='/message'&& method==="POST")
+  {
+    fs.writeFileSync('message.txt','Hi this a message from the client');
+    res.statusCode= 302;
+    res.setHeader('Location','/');
+    return res.end();
+  }
   res.setHeader('Content-Type', 'text/html');
   res.write(`
    <html>
