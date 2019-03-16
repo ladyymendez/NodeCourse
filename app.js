@@ -1,24 +1,23 @@
+const path= require('path');
+
 const  express = require('express');
 
 const app = express();
 
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: false }))
-app.use('/add-product',(req,res,next) => {
-    console.log("another middleware")
-    
-    //res.setHeader('Content-type/text');
-    res.send("<form action='/product' method='POST'><input type='text' name='title'><button type='submit'>Add Poduct</button></button></form>");
-});
-app.use('/product', (req,res,next)=>{
-    const {title}=req.body;
-    console.log(title);
-    res.redirect('/');
+
+app.use('/admin',adminRoutes);
+app.use(shopRoutes);
+
+app.use((req,res, next)=>{
+    res.sendFile(path.join(__dirname,'views','404.html'));
 })
 
-app.use('/',(req,res,next) => {
-    console.log("another middleware")
-    res.send("Hello from express");
-});
+
 
 app.listen(3000);
