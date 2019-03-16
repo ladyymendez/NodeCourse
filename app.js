@@ -1,17 +1,24 @@
-const  http = require('http');
 const  express = require('express');
-
 
 const app = express();
 
-app.use((req,res,next) => {
-    console.log("middleware")
-});
-
-
-app.use((req,res,next) => {
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }))
+app.use('/add-product',(req,res,next) => {
     console.log("another middleware")
+    
+    //res.setHeader('Content-type/text');
+    res.send("<form action='/product' method='POST'><input type='text' name='title'><button type='submit'>Add Poduct</button></button></form>");
 });
-const server = http.createServer(app);
+app.use('/product', (req,res,next)=>{
+    const {title}=req.body;
+    console.log(title);
+    res.redirect('/');
+})
 
-server.listen(3000);
+app.use('/',(req,res,next) => {
+    console.log("another middleware")
+    res.send("Hello from express");
+});
+
+app.listen(3000);
