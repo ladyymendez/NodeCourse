@@ -7,7 +7,7 @@ const rootDir = require('../util/path');
 const router = express.Router();
 
 // /admin/add-product
-router.use('/add-product',(req,res,next) => {
+router.get('/add-product',(req,res,next) => {
     console.log("another middleware")
     
     //res.setHeader('Content-type/text');
