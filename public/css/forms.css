@@ -15,6 +15,7 @@
     border-radius: 2px;
 }
 
-.form-control input:focus {
-    outline-color: #00695c;
+.form-control input:focus,
+.form-control textarea:focus {
+    outline-color: #0f1894;
 }

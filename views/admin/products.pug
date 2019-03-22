@@ -1,5 +1,20 @@
-extends  ../layouts/main-layout.pug
-
+extends ../layouts/main-layout.pug
 block content
     main
-        h1 Products
+        if prods.length > 0
+            .grid
+                each product in prods
+                    article.card.produt-item
+                        header.card_header
+                            h1.product_title #{product.title}
+                        div.card_image
+                            img(src=product.imageUrl, alt=product.title)
+                        div.card_content   
+                            h2.product_price #{product.price}
+                            p.product_description #{product.description}      
+                        .card_actions
+                            a(href="/admin/admin-product", title="title").btn Edit
+                            form(action="/admin/delete-product", method="post")
+                                button(type="submit").btn Delete
+        else
+            h1 No products
