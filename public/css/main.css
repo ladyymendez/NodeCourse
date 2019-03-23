@@ -42,6 +42,9 @@ main {
 .main-header_item a.active{
     color:blueviolet;
 }
+.centered{
+  text-align : center;
+}
 
 
 /*ADD*/

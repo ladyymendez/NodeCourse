@@ -13,7 +13,9 @@ block content
                             h2.product_price #{product.price}
                             p.product_description #{product.description}      
                         .card_actions
-                            form(action="/add-to-cart", method="post")
-                                button(type="submit").btn Add  to cart
+                            a(href="/products/"+product.id).btn Details
+                        form(action="/cart", method="post")
+                            input(type="hidden", name="productId" value=product.id)
+                            button(type="submit").btn Add to cart!!
         else
             h1 No products

@@ -1,5 +1,21 @@
 extends ../layouts/main-layout.pug
-
 block content
     main
-        h1 index
+        if prods.length > 0
+            .grid
+                each product in prods
+                    article.card.produt-item
+                        header.card_header
+                            h1.product_title #{product.title}
+                        div.card_image
+                            img(src=product.imageUrl, alt=product.title)
+                        div.card_content   
+                            h2.product_price #{product.price}
+                            p.product_description #{product.description}      
+                        .card_actions
+                            a(href="/products/"+product.id).btn Details
+                        form(action="/cart", method="post")
+                            input(type="hidden", name="productId" value=product.id)
+                            button(type="submit").btn Add to cart!!
+        else
+            h1 No products

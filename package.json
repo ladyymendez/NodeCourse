@@ -28,7 +28,8 @@
     "nodemon": "^1.18.10"
   },
   "nodemonConfig": {        
-    "ignore": ["data/products.json"]  
+    "ignore": ["data/*.json"]  
+
 }
   
 }
