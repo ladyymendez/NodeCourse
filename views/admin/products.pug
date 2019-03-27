@@ -14,7 +14,8 @@ block content
                             p.product_description #{product.description}      
                         .card_actions
                             a(href=`/admin/edit-product/`+product.id+`?edit=true`, title="title").btn Edit
-                            form(action="/admin/delete-product", method="post")
+                            form(action=`/admin/delete-product/`+product.id, method="post")
+                                input(type="hidden", name="productId" value=product.id)
                                 button(type="submit").btn Delete
         else
             h1 No products
