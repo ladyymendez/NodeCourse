@@ -12,15 +12,6 @@ app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
-db.execute('select * from products')
-.then(result => {
-    console.log(result);
-})
-.catch(err =>{
-    console.log(err);
-});
-
-//db.end();
 
 app.use(express.json());
 
