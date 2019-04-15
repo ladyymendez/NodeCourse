@@ -4,7 +4,7 @@ const  express = require('express');
 
 const app = express();
 const errorController = require('./controllers/error');
-const db = require('./util/database');
+const sequelize = require('./util/database');
 
 app.set('view engine','pug');
 app.set('views', 'views');
@@ -20,8 +20,14 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 
-app.use(errorController.get404Page)
+app.use(errorController.get404Page);
+
+sequelize
+.sync()
+.then(result => {
+    //console.log(result);
+    app.listen(3000);
+}) 
+.catch(console.log);
 
 
-
-app.listen(3000);
