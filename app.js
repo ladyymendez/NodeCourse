@@ -19,6 +19,16 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname,'public')));
+
+app.use((req, res, next)=>{
+    User.findByPk(1)
+    .then(user => {
+        req.user = user;
+        next();
+    })
+    .catch(console.log);
+})
+
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 
@@ -27,9 +37,19 @@ app.use(errorController.get404Page);
 Product.belongsTo(User,{constrains: true, onDelete: 'CASCADE'});
 User.hasMany(Product);
 sequelize
-.sync({force: true})
+.sync()
 .then(result => {
+    return User.findByPk(1);
     //console.log(result);
+})
+.then(user => {
+    if(!user){
+        return User.create({name: 'Lady', email: 'ladyy.mendez@gmail.com'});
+    }
+    return user;
+})
+.then(user => {
+    //console.log(user);
     app.listen(3000);
 }) 
 .catch(console.log);
