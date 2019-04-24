@@ -108,10 +108,11 @@ exports.postCart = (req,res, next) => {
     .then(products => {
         let product;
         if(products.length > 0)
-            product = product[0];
+            product = products[0];
         let newQuantity = 1;
         if(product){
-            //...
+            const oldQuantity = product.cartItem.quantity;
+            newQuantity = oldQuantity + 1;
         }
         return Product.findByPk(productId)
         .then(product => {
