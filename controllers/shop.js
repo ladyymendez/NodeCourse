@@ -113,6 +113,7 @@ exports.postCart = (req,res, next) => {
         if(product){
             const oldQuantity = product.cartItem.quantity;
             newQuantity = oldQuantity + 1;
+            return product;
         }
         return Product.findByPk(productId)
         .then(product => {
@@ -130,10 +131,19 @@ exports.postCart = (req,res, next) => {
 
 exports.postCartDeleteProdct = (req,res,next) => {
     const prodId = req.body.productId;
-    Product.findById(prodId,vproduct =>{
-        Cart.deleteProduct(prodId,product.price);
+    req.user
+    .getCart()
+    .then(cart => {
+        return cart.getProducts({where : {id: prodId}})
+    })
+    .then(products => {
+        const product = products[0];
+        return product.cartItem.destroy();
+    })
+    .then(result => {
         res.redirect('/cart');
-    });
+    })
+    .catch(console.log);
 }
 
 exports.getOrders = (req,res, next) => {
