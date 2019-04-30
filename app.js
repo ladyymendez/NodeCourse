@@ -10,7 +10,7 @@ app.set('view engine','pug');
 app.set('views', 'views');
 
  const adminRoutes = require('./routes/admin');
-/*const shopRoutes = require('./routes/shop'); */
+const shopRoutes = require('./routes/shop');
 
 
 app.use(express.json());
@@ -29,7 +29,7 @@ app.use((req, res, next)=>{
 })
 
 app.use('/admin',adminRoutes);
-/* app.use(shopRoutes); */
+app.use(shopRoutes);
 
 app.use(errorController.get404Page);
 

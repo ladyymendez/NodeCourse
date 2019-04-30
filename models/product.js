@@ -18,6 +18,19 @@ class Product{
     })
     .catch(console.log);
   }
+
+  static fetchAll(){
+    let db = getDb();
+    return db
+      .collection('products')
+      .find()
+      .toArray()
+      .then(products => {
+        console.log(products);
+        return products;
+      })
+      .catch(console.log);
+  }
 }
 
 module.exports = Product;
