@@ -12,5 +12,5 @@ block content
                 h2.product_price #{product.price}
                 p.product_description #{product.description}      
             form(action="/cart", method="post")
-                input(type="hidden", name="productId" value=product.id)
+                input(type="hidden", name="productId" value=product._id)
                 button(type="submit").btn Add to cart!!

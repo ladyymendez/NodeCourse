@@ -20,9 +20,7 @@ const mongoConnect = callback =>{
 };
 
 const getDb = () => {
-    console.log("ENTRA11");
     if(_db){
-        console.log("ENTRA");
         return _db;
     }
 
