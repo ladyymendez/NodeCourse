@@ -4,7 +4,7 @@ const  express = require('express');
 
 const app = express();
 const errorController = require('./controllers/error');
-const mongoConnect=require('./util/database');
+const { mongoConnect } = require('./util/database');
 
 app.set('view engine','pug');
 app.set('views', 'views');
@@ -25,6 +25,7 @@ app.use((req, res, next)=>{
         next();
     })
     .catch(console.log); */
+    next();
 })
 
 app.use('/admin',adminRoutes);
