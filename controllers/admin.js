@@ -27,19 +27,15 @@ exports.postAddProduct = (req,res,next)=>{
     })
     .catch(console.log);
 };
-/* 
+
 exports.getEditProduct = (req,res,next) => {
     const editMode = req.query.edit;
     if(!editMode){
         return res.redirect('/');
     }
     const prodId = req.params.productId;
-    req.user
-    .getProducts({where: {id: prodId}})
-    //Product.findByPk(prodId)
-    .then(products =>{
-        const product = products[0];
-
+    Product.findById(prodId)
+    .then(product =>{
         if(!product){
             return res.redirect('/');
         }
@@ -60,14 +56,16 @@ exports.postEditProduct = (req,res,next) => {
             imageUrl,
             price,
             description} = req.body;
-    Product.findByPk(productId)
-    .then(product => {
-        product.title = title;
-        product.price = price;
-        product.description = description;
-        product.imageUrl = imageUrl;
-        return product.save();
-    })
+
+    const product = new Product(
+        title,
+        price,
+        description,
+        imageUrl, 
+        productId
+    );
+    product
+    .save()
     .then(result => {
         console.log("Updated product!");
         res.redirect('/admin/products');
@@ -79,11 +77,8 @@ exports.postEditProduct = (req,res,next) => {
 exports.deleteProduct = (req,res,next) => {
     const {productId} = req.body;
     console.log(`Delete ${productId}`)
-    Product.findByPk(productId)
-    .then(product => {
-        return product.destroy();
-    })
-    .then(result => {
+    Product.deleteById(productId)
+    .then(() => {
         console.log("Destroyed Product")
         res.redirect('/admin/products');
     })
@@ -91,8 +86,7 @@ exports.deleteProduct = (req,res,next) => {
 }
 exports.getProducts = (req,res,next) => {
     //Product.findAll()
-    req.user
-    .getProducts()
+    Product.fetchAll()
     .then(products => {
         res.render('admin/products',{
             prods: products, 
@@ -101,4 +95,4 @@ exports.getProducts = (req,res,next) => {
         });
     })
     .catch(console.log);
-} */
+} 
