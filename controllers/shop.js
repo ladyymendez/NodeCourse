@@ -57,19 +57,14 @@ exports.getIndex = (req,res,next) =>{
 };
 
 exports.getCart = (req,res, next) => {
-    console.log("********************CART********************")
     req.user
     .getCart()
-    .then(cart => { 
-        return cart
-        .getProducts()
-        .then(products => {
-            res.render('shop/cart',{
-                path: '/cart',
-                pageTitle: 'Your Cart',
-                products: products
-            })
-        });
+    .then(products => { 
+        res.render('shop/cart',{
+            path: '/cart',
+            pageTitle: 'Your Cart',
+            products: products
+        })
     })
     .catch(console.log)
 
@@ -98,6 +93,7 @@ exports.postCart = (req,res, next) => {
         return req.user.addToCart(product);
     }).then(result => { 
         console.log(result);
+        res.redirect('/cart');
     })
 
     // let fetchedCart;
