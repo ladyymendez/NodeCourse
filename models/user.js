@@ -46,24 +46,61 @@ class User {
   }
 
   getCart(){
+    // const db = getDb();
+    // const productIds = this.cart.items.map(i=>{
+    //   return i.productId;
+    // });
+    // return db
+    //   .collection('products')
+    //   .find({ _id: { $in: productIds } })
+    //   .toArray()
+    //   .then(products => {
+    //     return products.map(p => { 
+    //       return {
+    //         ...p,
+    //         quantity: this.cart.items.find(i => { 
+    //           return i.productId.toString()=== p._id.toString();
+    //         }).quantity
+    //       }
+    //     })
+    //   });
+
+
     const db = getDb();
-    const productIds = this.cart.items.map(i=>{
-      return i.productId;
-    });
-    return db
-      .collection('products')
-      .find({ _id: { $in: productIds } })
-      .toArray()
-      .then(products => {
-        return products.map(p => { 
-          return {
-            ...p,
-            quantity: this.cart.items.find(i => { 
-              return i.productId.toString()=== p._id.toString();
-            }).quantity
-          }
-        })
-      });
+ 
+    const productIds = this.cart.items.map(i => i.productId );
+ 
+    return db.collection('products')
+              .find({ _id: { $in: productIds } })
+              .toArray()
+              .then(products => {
+ 
+                // // if we deleted a product => we remove it from cart
+                if ( this.cart.items.length !== products.length ) {
+                  console.log(`DELETING PRODUCTS DETECTED, WILL REMOVE THEM FROM CART`);
+ 
+                  // get only existing products
+                  const upToDateCartWithProducts = this.cart.items.filter(item => {
+ 
+                    const existingProduct = products.find(pr => pr._id.toString() === item.productId.toString() );
+ 
+                    return existingProduct && existingProduct._id;
+ 
+                  });
+ 
+                  // async operation
+                  db.collection('users')
+                      .updateOne(
+                        { _id: new ObjectId(this._id) },
+                        { $set: { cart: { items: upToDateCartWithProducts } } }
+                      );
+                }
+ 
+                return products.map(pr => {
+                  pr.quantity = this.cart.items.find(item => item.productId.toString() === pr._id.toString()).quantity;
+                  return pr;
+                })
+              } )
   }
 
   deleteItemFromCart(prodId) {
